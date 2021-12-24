@@ -46,7 +46,7 @@
 
 <div class="pt-16 pb-20 lg:pt-24 lg:pb-28">
 	<!--	<div class="relative max-w-lg mx-auto divide-y-2 divide-gray-200 lg:max-w-7xl">-->
-	<div class="relative max-w-lg mx-auto lg:max-w-7xl">
+	<div class="relative mx-auto max-w-md sm:max-w-3xl lg:max-w-7xl">
 		<div>
 			<h2 class="text-3xl tracking-tight font-extrabold text-gray-100 sm:text-4xl">Blog</h2>
 			<div class="mt-3 sm:mt-4 lg:grid lg:grid-cols-2 lg:gap-5 lg:items-center">

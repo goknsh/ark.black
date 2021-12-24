@@ -55,9 +55,9 @@
 
 <ComingSoon />
 
-<div class="py-4 sm:py-8">
+<div class="py-4 sm:py-8 mx-auto max-w-md sm:max-w-3xl lg:max-w-7xl">
 	<div class="relative rounded-2xl pb-12 bg-cyan-600">
-		<div class="relative max-w-7xl mx-auto py-10 px-4 sm:py-20 sm:px-6 lg:px-8">
+		<div class="relative py-10 px-4 sm:py-20 sm:px-6 lg:px-8">
 			<h1 class="text-4xl font-extrabold tracking-tight text-white md:text-5xl lg:text-6xl">
 				My Projects
 			</h1>
@@ -67,7 +67,7 @@
 		</div>
 	</div>
 	<div
-		class="-mt-12 rounded-2xl bg-cyan-600 overflow-hidden shadow divide-y divide-cyan-600 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px mx-auto max-w-md sm:max-w-3xl lg:max-w-7xl"
+		class="-mt-12 rounded-2xl bg-cyan-600 overflow-hidden shadow divide-y divide-cyan-600 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px"
 	>
 		{#each projects as project, projectIdx (project.name)}
 			<div
