@@ -1,6 +1,4 @@
 <script context="module">
-	import Button from './../components/button.svelte';
-
 	/** @type {import('@sveltejs/kit').ErrorLoad} */
 	export function load({ error, status }) {
 		return {
@@ -10,6 +8,8 @@
 </script>
 
 <script>
+	import Button from '$lib/components/button.svelte';
+
 	export let status;
 	export let error;
 

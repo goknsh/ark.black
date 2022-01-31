@@ -1,6 +1,8 @@
 import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-cloudflare';
 
+import { mdsvex } from 'mdsvex';
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	kit: {
@@ -10,7 +12,12 @@ const config = {
 		target: '#app'
 	},
 
-	preprocess: [preprocess({})]
+	extensions: ['.svelte', '.md'],
+
+	preprocess: [
+		preprocess({}),
+		mdsvex({ extensions: ['.md'], layout: 'src/routes/blog/post/_layout.post.svelte' })
+	]
 };
 
 export default config;

@@ -1,5 +1,5 @@
 <script>
-	import ComingSoon from './../components/coming-soon.svelte';
+	import ComingSoon from '$lib/components/coming-soon.svelte';
 
 	let projects = [
 		{
