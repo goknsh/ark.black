@@ -11,8 +11,8 @@
 </svelte:head>
 
 <div class="w-full flex justify-center">
-	<article class="my-10">
-		<div class="text-lg max-w-prose mx-auto">
+	<article class="w-full my-10">
+		<div class="w-full text-lg max-w-prose mx-auto">
 			<h1>
 				<span
 					class="block text-base text-center text-blue-600 font-semibold tracking-wide uppercase"
