@@ -1,6 +1,6 @@
 <script context="module">
-	export const load = async ({ page, fetch }) => {
-		const category = page.params.id;
+	export const load = async ({ params, fetch }) => {
+		const category = params.id;
 		const posts = await (await fetch('/api/blog/posts')).json();
 		const matchingPosts = posts.filter((post) => post.meta.categories.includes(category));
 
@@ -19,5 +19,9 @@
 	export let category;
 	export let posts;
 </script>
+
+<svelte:head>
+	<title>{category} - Category - Blog - Akaanksh Raj</title>
+</svelte:head>
 
 <BlogPosts {posts} {category} />
