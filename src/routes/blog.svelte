@@ -1,4 +1,4 @@
-<script context="module">
+<script lang="ts" context="module">
 	export const load = async ({ fetch }) => {
 		return {
 			props: {

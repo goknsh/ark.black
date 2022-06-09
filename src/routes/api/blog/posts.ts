@@ -15,7 +15,7 @@ export const get = async () => {
 
 	return {
 		body: allPosts.sort((a, b) => {
-			return new Date(b.meta.date) - new Date(a.meta.date);
+			return new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime();
 		})
 	};
 };

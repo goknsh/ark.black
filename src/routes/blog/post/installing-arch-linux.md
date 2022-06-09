@@ -7,13 +7,21 @@ categories:
   - arch
 ---
 
-Over the summer I decided to learn more about Linux and Operating Systems, so I began my journey by learning to install Arch Linux with full disk encryption and Secure Boot. I learnt heavily using the Arch Linux Wiki and am grateful for all the volunteers who took the time to write it. If you'd like to learn more about this process, I'd encourage you start from their [Installation Guide](https://wiki.archlinux.org/title/Installation_guide). This post is meant to be a collection of commands you can refer to rather than a detailed explanation of how and why everything works.
+Over the summer I decided to learn more about Linux and Operating Systems, so I began my journey by learning to install
+Arch Linux with full disk encryption and Secure Boot. I learnt heavily using the Arch Linux Wiki and am grateful for all
+the volunteers who took the time to write it. If you'd like to learn more about this process, I'd encourage you start
+from their [Installation Guide](https://wiki.archlinux.org/title/Installation_guide). This post is meant to be a
+collection of commands you can refer to rather than a detailed explanation of how and why everything works.
 
-First, we get the [monthly Arch Linux ISO](https://archlinux.org/download/) and make a bootable USB using something like [Rufus](https://rufus.ie/). After disabling secure boot and booting into the USB, we begin by wiping our disk and filling it with zeros.
+First, we get the [monthly Arch Linux ISO](https://archlinux.org/download/) and make a bootable USB using something
+like [Rufus](https://rufus.ie/). After disabling secure boot and booting into the USB, we begin by wiping our disk and
+filling it with zeros.
 
 ### Wipe Disk
 
-I use `/dev/nvme[...]` because the laptop I was installing Arch on contains an NVMe drive, but you might need to use `/dev/sda[...]` or something else depending on what storage device you have. You can check which devices and partitions you have with `lsblk`.
+I use `/dev/nvme[...]` because the laptop I was installing Arch on contains an NVMe drive, but you might need to
+use `/dev/sda[...]` or something else depending on what storage device you have. You can check which devices and
+partitions you have with `lsblk`.
 
 1. Let's create an encrypted container so that we can wipe the contents of the container:
 
@@ -34,11 +42,16 @@ I use `/dev/nvme[...]` because the laptop I was installing Arch on contains an N
 
 ### Create Partitions and Logical Volumes
 
-Now that we're done wiping the disk, we can move on to creating partitions and logical and physical volumes for boot, swap, home directory and so on. Note that you need not replicate logical volumes as I have them exactly. For example, I chose to create a logical volume for my `/home` directory, whereas you may choose not to do so.
+Now that we're done wiping the disk, we can move on to creating partitions and logical and physical volumes for boot,
+swap, home directory and so on. Note that you need not replicate logical volumes as I have them exactly. For example, I
+chose to create a logical volume for my `/home` directory, whereas you may choose not to do so.
 
-1. Create 1M `ef02` partition (for legacy backwards compatability just in case we need it in the future), 1G `ef00` partition (for boot files) and the rest of the space as a `8309` partition (for OS and user files) using `gdisk /dev/nvmen0n1`.
+1. Create 1M `ef02` partition (for legacy backwards compatability just in case we need it in the future), 1G `ef00`
+   partition (for boot files) and the rest of the space as a `8309` partition (for OS and user files)
+   using `gdisk /dev/nvmen0n1`.
 
-2. Create LUKS2 encrypted container: (since GRUB2 doesn't support LUKS2 at the time of writing, we'll be using `systemd-boot` -- it also makes secure booting easier)
+2. Create LUKS2 encrypted container: (since GRUB2 doesn't support LUKS2 at the time of writing, we'll be
+   using `systemd-boot` -- it also makes secure booting easier)
 
 ```
 # cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash sha512 --verify-passphrase /dev/nvme0n1p3
@@ -92,14 +105,16 @@ Now that we're done wiping the disk, we can move on to creating partitions and l
 
 ### Install Arch Linux
 
-Now that partitions have been created, we can proceed to installing packages and performing other tasks to get our system ready so that we can boot into it.
+Now that partitions have been created, we can proceed to installing packages and performing other tasks to get our
+system ready so that we can boot into it.
 
 1. Connect to internet (use `iwctl` if you're on WiFi).
 
 2. Install essential packages:
    - `lvm2` is required since we will use it in a mkinitcpio hook to open our encrypted container.
    - `vim` is required to edit files.
-   - `networkmanager` is required to manage Ethernet and WiFi connections. I'm picking this mainly because it's tried and tested and because it supposedly has easy-to-configure applet for use in window managers.
+   - `networkmanager` is required to manage Ethernet and WiFi connections. I'm picking this mainly because it's tried
+     and tested and because it supposedly has easy-to-configure applet for use in window managers.
    - `intel-ucode` is microcode updates for Intel CPUs. You should install `amd-ucode` if you have an AMD CPU.
 
 ```
@@ -250,7 +265,8 @@ $ yay -S sbctl-git
 $ exit
 ```
 
-5. Create and enroll keys required for secure boot: (Use the `--microsoft` flag only if there are option ROMs in the bootchain that are signed by Microsoft's keys)
+5. Create and enroll keys required for secure boot: (Use the `--microsoft` flag only if there are option ROMs in the
+   bootchain that are signed by Microsoft's keys)
 
 ```
 # sbctl create-keys
@@ -271,7 +287,8 @@ $ exit
   /efi/EFI/Linux/linux-signed.efi
 ```
 
-7. Sign relevant files: (In the future, files will be automatically signed with the `/usr/share/libalpm/hooks/99-sbctl.hook` pacman hook)
+7. Sign relevant files: (In the future, files will be automatically signed with
+   the `/usr/share/libalpm/hooks/99-sbctl.hook` pacman hook)
 
 ```
 # sbctl sign -s /efi/EFI/BOOT/BOOTX64.EFI
@@ -289,4 +306,6 @@ $ sudo systemctl enable fstrim.timer
 $ sudo systemctl start fstrim.timer
 ```
 
-And that's it. I had a particularly difficult time getting secure boot to work, but figured it out in the end. Now I definitely know way more about secure boot than ever before. I mainly wanted to get secure boot working to protect from evil maid attacks since that attack defeats the purpose of full disk encryption without a protected boot process.
+And that's it. I had a particularly difficult time getting secure boot to work, but figured it out in the end. Now I
+definitely know way more about secure boot than ever before. I mainly wanted to get secure boot working to protect from
+evil maid attacks since that attack defeats the purpose of full disk encryption without a protected boot process.

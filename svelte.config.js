@@ -1,3 +1,4 @@
+import mdsvexConfig from './mdsvex.config.js';
 import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-cloudflare';
 
@@ -5,18 +6,17 @@ import { mdsvex } from 'mdsvex';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	kit: {
-		adapter: adapter(),
+	extensions: ['.svelte', ...mdsvexConfig.extensions],
 
-		// hydrate the <div id="app"> element in src/app.html
-		target: '#app'
+	kit: {
+		adapter: adapter()
 	},
 
-	extensions: ['.svelte', '.md'],
-
 	preprocess: [
-		preprocess({}),
-		mdsvex({ extensions: ['.md'], layout: 'src/routes/blog/post/_layout.post.svelte' })
+		preprocess({
+			postcss: true
+		}),
+		mdsvex(mdsvexConfig)
 	]
 };
 

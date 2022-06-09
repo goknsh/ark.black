@@ -1,4 +1,4 @@
-<script context="module">
+<script lang="ts" context="module">
 	export const load = async ({ params, fetch }) => {
 		const category = params.id;
 		const posts = await (await fetch('/api/blog/posts')).json();
@@ -24,4 +24,4 @@
 	<title>{category} - Category - Blog - Akaanksh Raj</title>
 </svelte:head>
 
-<BlogPosts {posts} {category} />
+<BlogPosts {category} {posts} />
